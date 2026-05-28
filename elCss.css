@@ -1,0 +1,20 @@
+#root {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    height: 80vh;
+}
+.btn-group {
+    display: grid;
+    grid-template-columns: repeat(2, 0.5fr);
+    margin-top: 10px;
+    height: 100%;
+    gap: 10px;
+}
+
+.img-btn img {
+    width: 100px;
+    height: 100px;
+}

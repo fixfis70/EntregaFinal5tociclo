@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.10/p5.min.js"></script>
+    <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+    <link rel="stylesheet" href="elCss.css">
+</head>
+<body id="root">
+<div class="btn-group">
+    <button class="img-btn" value="./imgs/bird.png" onclick="onImg(this.value)">
+        <img src="./imgs/bird.png" alt="birs">
+    </button>
+    <button class="img-btn" value="./imgs/vaca.png" onclick="onImg(this.value)">
+        <img src="./imgs/vaca.png" alt="birs">
+
+    </button>
+    <button class="img-btn" value="./imgs/panda.png" onclick="onImg(this.value)">
+        <img src="./imgs/panda.png" alt="birs">
+
+    </button>
+    <button class="img-btn" value="./imgs/zebra.png" onclick="onImg(this.value)">
+        <img src="./imgs/zebra.png" alt="birs">
+
+    </button>
+    <button class="img-btn" value="./imgs/gold.png" onclick="onImg(this.value)">
+        <img src="./imgs/gold.png" alt="birs">
+
+    </button>
+    <button class="img-btn" value="./imgs/cat.png" onclick="onImg(this.value)">
+        <img src="./imgs/cat.png" alt="birs">
+
+    </button>
+    <button class="img-btn" value="./imgs/perro.png" onclick="onImg(this.value)">
+        <img src="./imgs/perro.png" alt="birs">
+
+    </button>
+
+</div>
+<script>
+    let classifier;
+
+    // A variable to hold the image we want to classify
+
+    // Variables for displaying the results on the canvas
+    let label = "";
+    let confidence = "";
+
+    function preload() {
+        classifier = ml5.imageClassifier("MobileNet");
+    }
+
+    function setup() {
+        createCanvas(400, 400);
+    }
+
+    // Callback function for when classification has finished
+    function gotResult(results) {
+        // The results are in an array ordered by confidence
+        console.log(results);
+
+        // Display the results on the canvas
+        fill(255);
+        stroke(0);
+        textSize(18);
+        label = "Label: " + results[0].label;
+        const confi = results[0].confidence;
+        confidence = "Confidence: " + nf(confi, 0, 2);
+        if (confi < 0.5){
+            text("Valor muy bajo para concretar algo",10,340)
+        }
+        text(label, 10, 360);
+        text(confidence, 10, 380);
+
+    }
+
+    function onImg(imgsource){
+        loadImage(imgsource, (img) => {
+
+            classifier.classify(img, (r) => {
+                if (r[0].confidence < 0.5){
+                    loadImage("./imgs/error.png", (img2) => {
+                        image(img2, 0, 0, width, height);
+                        gotResult(r);
+                    })
+                } else {
+                    image(img, 0, 0, width, height);
+                    gotResult(r);
+                }
+            });
+
+        });
+    }
+
+
+</script>
+</body>
+</html>

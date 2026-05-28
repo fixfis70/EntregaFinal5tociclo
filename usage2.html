@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detección posición mano</title>
+
+    <!-- P5.js facilitarnos la gestión de: canvas, sonido, cámara, vídeo -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
+
+    <!-- ML5.js (ML) - Última versión -->
+    <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+
+</head>
+<body>
+<h1>Detección puntos en la mano</h1>
+<div>
+    <label for="puntos">Numero de puntons</label>
+    <input disabled type="text" id="puntos" placeholder="numero de puntos">
+</div>
+<div>
+    <label for="manos">Numero manos</label>
+    <input disabled type="text" id="manos" placeholder="numero de puntos">
+</div>
+<div>
+    <label for="vistamanos">En Vista</label>
+    <input disabled type="text" id="vistamanos" placeholder="numero de puntos">
+</div>
+<script>
+    //Variables y objetos
+    let puntos;
+    let manos;
+    let vistamanos
+    let handPose
+    let video
+    let hands = []
+
+    //Asignar el modelo
+    function preload() {
+        puntos = document.getElementById('puntos');
+        manos = document.getElementById('manos');
+        vistamanos = document.getElementById('vistamanos');
+
+        handPose = ml5.handPose()
+    }
+
+    //Construir/gestionar UI
+    function setup() {
+        //Renderizar el vídeo
+        createCanvas(640, 480)
+        video = createCapture(VIDEO)
+        video.size(640, 480)
+        video.hide()
+
+
+        //Iniciar detección manos
+        handPose.detectStart(video, gotHands)
+
+    }
+
+    //Render
+    function draw() {
+        //Para pintar en el canvas[0] utilizamos image()
+        image(video, 0, 0, width, height)
+        let vp = ""
+        let p = 0
+        manos.value = hands.length
+        for (let i = 0; i < hands.length; i++) {
+            let hand = hands[i]
+            p += hand.keypoints.length
+            vp += hand.handedness + "  "
+
+            drawSquares(hand.keypoints, hand.handedness === "Right")
+
+            for (let j = 0; j < hand.keypoints.length; j++) {
+                let keypoint = hand.keypoints[j]
+
+                fill(fingerToColor(keypoint.name))
+                noStroke()
+                circle(keypoint.x, keypoint.y, 10)
+
+            }
+        }
+        if (hands.length > 1) {
+            expansion(hands[0].index_finger_tip, hands[1].index_finger_tip)
+        }
+
+        puntos.value = p
+        vistamanos.value = vp
+    }
+
+    function expansion(index_right, index_left){
+        //"index_finger_tip"
+
+        stroke('magenta');
+        strokeWeight(5);
+        line(index_right.x,index_right.y , index_left.x, index_left.y);
+    }
+
+    //Resultados
+    function gotHands(result) {
+        //Retorna un array con la información de la mano/dedos
+        hands = result
+    }
+
+    function drawSquares(keypoints, derecha) {
+        const ax = keypoints.map(k => k.x)
+        const ay = keypoints.map(k => k.y)
+
+        const minX = Math.min(...ax);
+        const maxX = Math.max(...ax);
+
+        const minY = Math.min(...ay);
+        const maxY = Math.max(...ay);
+
+        noFill()
+        if (derecha) {
+            stroke(255, 0, 0)
+        } else {
+            stroke(0, 255, 0)
+        }
+        strokeWeight(3)
+        rect(minX, minY, maxX - minX, maxY - minY);
+
+    }
+
+    function fingerToColor(finger) {
+        if (finger.startsWith("index")) {
+            return color(167, 250, 47)
+        }
+        if (finger.startsWith("middle")) {
+            return color(252, 8, 8)
+        }
+        if (finger.startsWith("pinky")) {
+            return color(245, 255, 0)
+        }
+        if (finger.startsWith("ring")) {
+            return color(159, 23, 255)
+        }
+        if (finger.startsWith("thumb")) {
+            return color(15, 11, 156)
+        }
+        if (finger.startsWith("wrist")) {
+            return color(255, 255, 255)
+        }
+        return color(255, 255, 255)
+    }
+
+</script>
+</body>
+</html>
