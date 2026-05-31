@@ -5,5 +5,7 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="@tailwindcss" level="application" />
+    <orderEntry type="library" name="p5" level="application" />
+    <orderEntry type="library" name="ml5" level="application" />
   </component>
 </module>

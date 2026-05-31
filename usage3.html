@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
+
+    <!-- ML5.js (ML) - Última versión -->
+    <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+</head>
+<body>
+    <div>
+        <h1>Decteccion de la cara</h1>
+        <p>Selecciona un color primero</p>
+        <input type="color" id="color">
+        <p>Selecciona que quieres capurar</p>
+<!--        <select id="select">-->
+<!--            <option value="nose">Nariz</option>-->
+<!--            <option value="face">Cara</option>-->
+<!--            <option value="eyes">Ojos</option>-->
+<!--            <option value="eyesbrow">Cejas</option>-->
+<!--            <option value="lips">Boca</option>-->
+<!--        </select>-->
+        <input type="text" id="select">
+    </div>
+
+
+<script>
+    /*
+     * 👋 Hello! This is an ml5.js example made and shared with ❤️.
+     * Learn more about the ml5.js project: https://ml5js.org/
+     * ml5.js license and Code of Conduct: https://github.com/ml5js/ml5-next-gen/blob/main/LICENSE.md
+     *
+     * This example demonstrates face tracking on live video through ml5.faceMesh.
+     */
+
+    let faceMesh;
+    let video;
+    let faces = [];
+    let options = { maxFaces: 1, refineLandmarks: false, flipHorizontal: false };
+    let part;
+    let color;
+
+
+    function preload() {
+        // Load the faceMesh model
+        faceMesh = ml5.faceMesh(options);
+        const colorField = document.getElementById("color");
+        colorField.addEventListener("change", function() {
+            color = colorField.value;
+            console.log(color);
+        })
+        const partField = document.getElementById("select");
+        partField.addEventListener("change", function() {
+            part = partField.value;
+            console.log(part);
+        })
+    }
+
+    function setup() {
+        createCanvas(640, 480);
+        // Create the webcam video and hide it
+        video = createCapture(VIDEO);
+        video.size(640, 480);
+        video.hide();
+        // Start detecting faces from the webcam video
+        faceMesh.detectStart(video, gotFaces);
+    }
+
+    function draw() {
+        // Draw the webcam video
+        image(video, 0, 0, width, height);
+
+        // Draw all the tracked face points
+        for (let i = 0; i < faces.length; i++) {
+            let face = faces[i];
+            let selectedPart = face[part];
+            if (!selectedPart) return
+            for (let j = 0; j < selectedPart.keypoints.length; j++) {
+                let keypoint = selectedPart.keypoints[j];
+                fill(color);
+                ellipse(keypoint.x, keypoint.y, 10, 10);
+            }
+        }
+    }
+
+    // Callback function for when faceMesh outputs data
+    function gotFaces(results) {
+        // Save the output to the faces variable
+        faces = results;
+        console.log(results);
+    }
+
+</script>
+</body>
+</html>
