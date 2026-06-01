@@ -10,25 +10,30 @@
 
     <!-- ML5.js (ML) - Última versión -->
     <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+    <link rel="stylesheet" href="elCss.css">
 </head>
 <body>
-    <div>
-        <h1>Decteccion de la cara</h1>
-        <p>Selecciona un color primero</p>
-        <input type="color" id="color">
-        <p>Selecciona que quieres capurar</p>
-        <select id="select">
-            <option value="leftEye">Ojo Izquierdo</option>
-            <option value="leftEyebrow">Ceja Ojo Izquierdo</option>
-            <option value="rightEye">Ojo Derecho</option>
-            <option value="rightEyebrow">Ceja Ojo Derecho</option>
-            <option value="faceOval">Silueta de la cara</option>
-            <option value="lips">Labios</option>
-            <option value="todo">Todo</option>
-        </select>
-        <!-- Puedes descomentar esto y conmentar lo de arriba para poder introducir los valores escribiendolos! -->
-<!--        <input type="text" id="select">-->
-    </div>
+<div>
+    <h1>Caso 3</h1>
+    <p>Detección partes del rosto. Utilizar la cámara, se debe poder seleccionar qué parte del rostro se desea detectar, además del color. Luego se deberá mostrar en tiempo real lo solicitado.</p>
+</div>
+<div>
+    <h1>Decteccion de la cara</h1>
+    <p>Selecciona un color primero</p>
+    <input type="color" id="color">
+    <p>Selecciona que quieres capurar</p>
+    <select id="select">
+        <option value="leftEye">Ojo Izquierdo</option>
+        <option value="leftEyebrow">Ceja Ojo Izquierdo</option>
+        <option value="rightEye">Ojo Derecho</option>
+        <option value="rightEyebrow">Ceja Ojo Derecho</option>
+        <option value="faceOval">Silueta de la cara</option>
+        <option value="lips">Labios</option>
+        <option value="todo">Todo</option>
+    </select>
+    <!-- Puedes descomentar esto y conmentar lo de arriba para poder introducir los valores escribiendolos! -->
+    <!--        <input type="text" id="select">-->
+</div>
 
 
 <script>
@@ -43,7 +48,7 @@
     let faceMesh;
     let video;
     let faces = [];
-    let options = { maxFaces: 1, refineLandmarks: false, flipHorizontal: false };
+    let options = {maxFaces: 1, refineLandmarks: false, flipHorizontal: false};
     let part;
     let color;
 
@@ -52,12 +57,12 @@
         // Load the faceMesh model
         faceMesh = ml5.faceMesh(options);
         const colorField = document.getElementById("color");
-        colorField.addEventListener("change", function() {
+        colorField.addEventListener("change", function () {
             color = colorField.value;
             console.log(color);
         })
         const partField = document.getElementById("select");
-        partField.addEventListener("change", function() {
+        partField.addEventListener("change", function () {
             part = partField.value;
             console.log(part);
         })
@@ -87,7 +92,7 @@
             if (!selectedPart) return
             for (let j = 0; j < selectedPart.length; j++) {
                 let keypoint = selectedPart[j];
-                fill(color??255);
+                fill(color ?? 255);
                 ellipse(keypoint.x, keypoint.y, 10, 10);
             }
         }
@@ -100,6 +105,10 @@
         console.log(results);
     }
 
+</script>
+<script src="navbar.js"></script>
+<script>
+    whereAmI("case3");
 </script>
 </body>
 </html>

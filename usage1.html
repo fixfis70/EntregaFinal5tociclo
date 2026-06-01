@@ -10,37 +10,46 @@
     <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
     <link rel="stylesheet" href="elCss.css">
 </head>
-<body id="root">
-<div class="btn-group">
-    <button class="img-btn" value="./imgs/bird.png" onclick="onImg(this.value)">
-        <img src="./imgs/bird.png" alt="birs">
-    </button>
-    <button class="img-btn" value="./imgs/vaca.png" onclick="onImg(this.value)">
-        <img src="./imgs/vaca.png" alt="birs">
-
-    </button>
-    <button class="img-btn" value="./imgs/panda.png" onclick="onImg(this.value)">
-        <img src="./imgs/panda.png" alt="birs">
-
-    </button>
-    <button class="img-btn" value="./imgs/zebra.png" onclick="onImg(this.value)">
-        <img src="./imgs/zebra.png" alt="birs">
-
-    </button>
-    <button class="img-btn" value="./imgs/gold.png" onclick="onImg(this.value)">
-        <img src="./imgs/gold.png" alt="birs">
-
-    </button>
-    <button class="img-btn" value="./imgs/cat.png" onclick="onImg(this.value)">
-        <img src="./imgs/cat.png" alt="birs">
-
-    </button>
-    <button class="img-btn" value="./imgs/perro.png" onclick="onImg(this.value)">
-        <img src="./imgs/perro.png" alt="birs">
-
-    </button>
-
+<body>
+<div>
+    <h1>Caso 1</h1>
+    <p>Capacidad de detectar una imagen (almacenada en el proyecto). Se deberá disponer de un catálogo de imágenes en miniatura (no menos de 5), al pulsar clic sobre una de ella se deberá mostrar la descripción y el nivel porcentual de confianza de lo que se ha identificado. Si la imagen tiene menos de 50%, deberá mostrarse en el centro un signo de interrogación e indicar que no puede precisar que es.</p>
 </div>
+<div id="root">
+    <div class="btn-group">
+        <button class="img-btn" value="./imgs/bird.png" onclick="onImg(this.value)">
+            <img src="./imgs/bird.png" alt="birs">
+        </button>
+        <button class="img-btn" value="./imgs/vaca.png" onclick="onImg(this.value)">
+            <img src="./imgs/vaca.png" alt="birs">
+
+        </button>
+        <button class="img-btn" value="./imgs/panda.png" onclick="onImg(this.value)">
+            <img src="./imgs/panda.png" alt="birs">
+
+        </button>
+        <button class="img-btn" value="./imgs/zebra.png" onclick="onImg(this.value)">
+            <img src="./imgs/zebra.png" alt="birs">
+
+        </button>
+        <button class="img-btn" value="./imgs/gold.png" onclick="onImg(this.value)">
+            <img src="./imgs/gold.png" alt="birs">
+
+        </button>
+        <button class="img-btn" value="./imgs/cat.png" onclick="onImg(this.value)">
+            <img src="./imgs/cat.png" alt="birs">
+
+        </button>
+        <button class="img-btn" value="./imgs/perro.png" onclick="onImg(this.value)">
+            <img src="./imgs/perro.png" alt="birs">
+
+        </button>
+
+    </div>
+
+    <div id="canvaContainer"></div>
+</div>
+
 <script>
     let classifier;
 
@@ -55,7 +64,8 @@
     }
 
     function setup() {
-        createCanvas(400, 400);
+        let canvas = createCanvas(400, 400);
+        canvas.parent("canvaContainer");
     }
 
     // Callback function for when classification has finished
@@ -95,8 +105,10 @@
 
         });
     }
-
-
+</script>
+<script src="navbar.js"></script>
+<script>
+    whereAmI("case1");
 </script>
 </body>
 </html>
