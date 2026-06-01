@@ -21,14 +21,16 @@
 </div>
 <script>
     let video;
-    let bodyPose;
+    //let bodyPose;
+    let detections = []
+    let model
     let poses = [];
-    let connections;
     let audio = new Audio('alamar.mp3');
-    let ultimaVez
+    let ultimaVez = 0
 
     function preload() {
-        bodyPose = ml5.bodyPose();
+        //bodyPose = ml5.bodyPose();
+        model = ml5.objectDetection("cocossd");
     }
 
     function setup() {
@@ -40,23 +42,39 @@
         video.size(640, 480);
         video.hide();
 
-        // Start detecting poses in the webcam video
-        bodyPose.detectStart(video, gotPoses);
-        // Get the skeleton connection information
-        connections = bodyPose.getSkeleton();
+        model.detectStart(video, gotResult);
     }
 
     function draw() {
         // Draw the webcam video
         image(video, 0, 0, width, height);
 
-        dibujarEsqueletoPersona()
+        //dibujarEsqueletoPersona()
         dibujarProgreso()
+        dibujarDectecion()
     }
 
     let played = false;
     let shouldPlay = false;
 
+    function dibujarDectecion() {
+
+        for (let i = 0; i < detections.length; i += 1) {
+            let detection = detections[i];
+
+            // Draw bounding box
+            stroke(0, 255, 0);
+            strokeWeight(4);
+            noFill();
+            rect(detection.x, detection.y, detection.width, detection.height);
+
+            // Draw label
+            noStroke();
+            fill(255);
+            textSize(24);
+            text(detection.label, detection.x + 10, detection.y + 24);
+        }
+    }
     function dibujarProgreso() {
         if (shouldPlay && !played){
             audio.play();
@@ -80,47 +98,17 @@
         }
     }
 
-    function dibujarEsqueletoPersona() {
-        // Draw the skeleton connections
-        for (let i = 0; i < poses.length; i++) {
-            let pose = poses[i];
-            for (let j = 0; j < connections.length; j++) {
-                let pointAIndex = connections[j][0];
-                let pointBIndex = connections[j][1];
-                let pointA = pose.keypoints[pointAIndex];
-                let pointB = pose.keypoints[pointBIndex];
-                // Only draw a line if both points are confident enough
-                if (pointA.confidence > 0.1 && pointB.confidence > 0.1) {
-                    stroke(255, 0, 0);
-                    strokeWeight(2);
-                    line(pointA.x, pointA.y, pointB.x, pointB.y);
-                }
-            }
-        }
-
-        // Draw all the tracked landmark points
-        for (let i = 0; i < poses.length; i++) {
-            let pose = poses[i];
-            for (let j = 0; j < pose.keypoints.length; j++) {
-                let keypoint = pose.keypoints[j];
-                // Only draw a circle if the keypoint's confidence is bigger than 0.1
-                if (keypoint.confidence > 0.1) {
-                    fill(0, 255, 0);
-                    noStroke();
-                    circle(keypoint.x, keypoint.y, 10);
-                }
-            }
-        }
-    }
-
-    function gotPoses(results) {
-        // Save the output to the poses variable
-        poses = results;
-
-        //guardamos la ultima vez que se detecto una persona
+    function gotResult(results) {
+        detections = results;
         if (results?.length > 0) {
-            if (ultimaVez === 0) {
-                ultimaVez = Date.now()
+            for (let i = 0; i < detections.length; i++) {
+                const detection = detections[i];
+                if (detection.label === "person") {
+                    if (ultimaVez === 0) {
+                        console.log("go");
+                        ultimaVez = Date.now()
+                    }
+                }
             }
         } else {
             ultimaVez = 0
@@ -128,7 +116,6 @@
             played = false;
         }
     }
-
 </script>
 <script src="navbar.js"></script>
 <script>
