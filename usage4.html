@@ -23,6 +23,7 @@
     let video;
     // To store the classification
     let modelResult = "";
+    let label = "";
     let confidence = 0;
 
     // Load the model first
@@ -49,42 +50,51 @@
         fill(255);
         textSize(16);
         textAlign(CENTER);
-        text(modelResult, width / 2, height - 4);
+        text(label, width / 2, height - 4);
         text(confidence, width / 2, height - 12);
     }
 
-    // Get a prediction for the current video frame
     function classifyVideo() {
         classifier.classifyStart(video, gotResult);
     }
-    // When we get a result
+
+
+    //Tomamos un tiempo para poder esperar 1 segundo (si no el se llena la cola de speech)
+    let lastExecutionTime = 0;
+
     function gotResult(results) {
-        // If there is an error
         if (!results || results.length === 0) {
             console.error("Eroro");
             return;
         }
-        // The results are in an array ordered by confidence.
-        // console.log(results[0]);
-        const result = results[0];
 
-        if (result.confidence > 0.5) {
+        const result = results[0];
+        confidence = result.confidence;
+
+        //Verificamos el tiempo y guardamos hora
+        const now = Date.now();
+        if (now - lastExecutionTime < 1000) {
+            return;
+        }
+        lastExecutionTime = now;
+
+        //mas de 80% para evitar falsos reconocimientos
+        if (result.confidence > 0.8) {
             const currentResult = result.label;
 
             if (currentResult !== modelResult) {
+                label = modelResult = currentResult;
+                // el speech sacado de https://lenguajejs.com/javascript/web-apis/speechsynthesis/
                 const message = new SpeechSynthesisUtterance(currentResult);
                 speechSynthesis.speak(message);
             }
 
-            confidence = result.confidence;
-            modelResult = currentResult
         } else {
-            modelResult = "No encontrado"
+            if (modelResult !== "No encontrado") {
+                label = "No encontrado";
+            }
         }
-
         console.log(result);
-
-        // Classifiy again!
     }
 </script>
 
