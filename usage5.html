@@ -13,9 +13,11 @@
     <link rel="stylesheet" href="elCss.css">
 </head>
 <body>
-<div>
-    <h1>Caso 5</h1>
-    <p>Utilizando el detector de objetos de la librería ML5, emitir una alerta cuando detecte la presencia de una persona por más de 5 segundos. Se deberá mostrar una barra de desplazamiento durante el conteo, si llega a 5, la alarma se emite (sonora).</p>
+<div id="root">
+    <div>
+        <h1>Caso 5</h1>
+        <p>Utilizando el detector de objetos de la librería ML5, emitir una alerta cuando detecte la presencia de una persona por más de 5 segundos. Se deberá mostrar una barra de desplazamiento durante el conteo, si llega a 5, la alarma se emite (sonora).</p>
+    </div>
 </div>
 <script>
     let video;
@@ -30,7 +32,8 @@
     }
 
     function setup() {
-        createCanvas(640, 480);
+        const canvas = createCanvas(640, 480);
+        canvas.parent('root');
 
         // Create the video and hide it
         video = createCapture(VIDEO);

@@ -13,26 +13,28 @@
     <link rel="stylesheet" href="elCss.css">
 </head>
 <body>
-<div>
-    <h1>Caso 3</h1>
-    <p>Detección partes del rosto. Utilizar la cámara, se debe poder seleccionar qué parte del rostro se desea detectar, además del color. Luego se deberá mostrar en tiempo real lo solicitado.</p>
-</div>
-<div>
-    <h1>Decteccion de la cara</h1>
-    <p>Selecciona un color primero</p>
-    <input type="color" id="color">
-    <p>Selecciona que quieres capurar</p>
-    <select id="select">
-        <option value="leftEye">Ojo Izquierdo</option>
-        <option value="leftEyebrow">Ceja Ojo Izquierdo</option>
-        <option value="rightEye">Ojo Derecho</option>
-        <option value="rightEyebrow">Ceja Ojo Derecho</option>
-        <option value="faceOval">Silueta de la cara</option>
-        <option value="lips">Labios</option>
-        <option value="todo">Todo</option>
-    </select>
-    <!-- Puedes descomentar esto y conmentar lo de arriba para poder introducir los valores escribiendolos! -->
-    <!--        <input type="text" id="select">-->
+<div id="root">
+    <div>
+        <h1>Caso 3</h1>
+        <p>Detección partes del rosto. Utilizar la cámara, se debe poder seleccionar qué parte del rostro se desea detectar, además del color. Luego se deberá mostrar en tiempo real lo solicitado.</p>
+    </div>
+    <div style="width: 100%">
+        <h1>Decteccion de la cara</h1>
+        <p>Selecciona un color primero</p>
+        <input type="color" id="color">
+        <p>Selecciona que quieres capurar</p>
+        <select id="select">
+            <option value="leftEye">Ojo Izquierdo</option>
+            <option value="leftEyebrow">Ceja Ojo Izquierdo</option>
+            <option value="rightEye">Ojo Derecho</option>
+            <option value="rightEyebrow">Ceja Ojo Derecho</option>
+            <option value="faceOval">Silueta de la cara</option>
+            <option value="lips">Labios</option>
+            <option value="todo">Todo</option>
+        </select>
+        <!-- Puedes descomentar esto y conmentar lo de arriba para poder introducir los valores escribiendolos! -->
+        <!--        <input type="text" id="select">-->
+    </div>
 </div>
 
 
@@ -69,7 +71,8 @@
     }
 
     function setup() {
-        createCanvas(640, 480);
+        const canvas = createCanvas(640, 480);
+        canvas.parent("root");
         // Create the webcam video and hide it
         video = createCapture(VIDEO);
         video.size(640, 480);

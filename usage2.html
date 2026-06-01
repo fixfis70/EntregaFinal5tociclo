@@ -18,18 +18,21 @@
     <h1>Caso 2</h1>
     <p>Trazado de línea. Esta aplicación utilizará los datos provenientes de la cámara Web, se deberá trazar una línea recta entre los dedos índices.</p>
 </div>
-<h1>Detección puntos en la mano</h1>
-<div>
-    <label for="puntos">Numero de puntons</label>
-    <input disabled type="text" id="puntos" placeholder="numero de puntos">
-</div>
-<div>
-    <label for="manos">Numero manos</label>
-    <input disabled type="text" id="manos" placeholder="numero de puntos">
-</div>
-<div>
-    <label for="vistamanos">En Vista</label>
-    <input disabled type="text" id="vistamanos" placeholder="numero de puntos">
+
+<div id="root">
+    <h1>Detección puntos en la mano</h1>
+    <div>
+        <label for="puntos">Numero de puntons</label>
+        <input disabled type="text" id="puntos" placeholder="numero de puntos">
+    </div>
+    <div>
+        <label for="manos">Numero manos</label>
+        <input disabled type="text" id="manos" placeholder="numero de puntos">
+    </div>
+    <div>
+        <label for="vistamanos">En Vista</label>
+        <input disabled type="text" id="vistamanos" placeholder="numero de puntos">
+    </div>
 </div>
 <script>
     //Variables y objetos
@@ -52,7 +55,8 @@
     //Construir/gestionar UI
     function setup() {
         //Renderizar el vídeo
-        createCanvas(640, 480)
+        const canvas = createCanvas(640, 480);
+        canvas.parent('root');
         video = createCapture(VIDEO)
         video.size(640, 480)
         video.hide()

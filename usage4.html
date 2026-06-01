@@ -13,11 +13,13 @@
     <link rel="stylesheet" href="elCss.css">
 </head>
 <body>
-<div>
-    <h1>Caso 4</h1>
-    <p>Utiliza TEACHABLE MACHINE, entrenar un nuevo modelo para que sea capaz de detectar: Una botella, una billetera, un control remoto y un plumón. Se deberá poder realizar la detección en tiempo real, solo se mostrará el nombre y porcentaje del elemento detectado. Además, utilice un sintetizador de voz para que se pueda escuchar lo que se encontró. Condicionar un nivel de confianza sobre el 50%</p>
+<div id="root">
+    <div>
+        <h1>Caso 4</h1>
+        <p>Utiliza TEACHABLE MACHINE, entrenar un nuevo modelo para que sea capaz de detectar: Una botella, una billetera, un control remoto y un plumón. Se deberá poder realizar la detección en tiempo real, solo se mostrará el nombre y porcentaje del elemento detectado. Además, utilice un sintetizador de voz para que se pueda escuchar lo que se encontró. Condicionar un nivel de confianza sobre el 50%</p>
+    </div>
+    <div>Teachable Machine Image Model - p5.js and ml5.js</div>
 </div>
-<div>Teachable Machine Image Model - p5.js and ml5.js</div>
 
 <script type="text/javascript">
     // Classifier Variable
@@ -38,7 +40,8 @@
     }
 
     function setup() {
-        createCanvas(640, 480);
+        const canvas = createCanvas(640, 480);
+        canvas.parent('root');
         // Create the webcam video and hide it
         video = createCapture(VIDEO);
         video.size(640, 480);

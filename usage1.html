@@ -11,43 +11,49 @@
     <link rel="stylesheet" href="elCss.css">
 </head>
 <body>
-<div>
-    <h1>Caso 1</h1>
-    <p>Capacidad de detectar una imagen (almacenada en el proyecto). Se deberá disponer de un catálogo de imágenes en miniatura (no menos de 5), al pulsar clic sobre una de ella se deberá mostrar la descripción y el nivel porcentual de confianza de lo que se ha identificado. Si la imagen tiene menos de 50%, deberá mostrarse en el centro un signo de interrogación e indicar que no puede precisar que es.</p>
-</div>
+
 <div id="root">
-    <div class="btn-group">
-        <button class="img-btn" value="./imgs/bird.png" onclick="onImg(this.value)">
-            <img src="./imgs/bird.png" alt="birs">
-        </button>
-        <button class="img-btn" value="./imgs/vaca.png" onclick="onImg(this.value)">
-            <img src="./imgs/vaca.png" alt="birs">
-
-        </button>
-        <button class="img-btn" value="./imgs/panda.png" onclick="onImg(this.value)">
-            <img src="./imgs/panda.png" alt="birs">
-
-        </button>
-        <button class="img-btn" value="./imgs/zebra.png" onclick="onImg(this.value)">
-            <img src="./imgs/zebra.png" alt="birs">
-
-        </button>
-        <button class="img-btn" value="./imgs/gold.png" onclick="onImg(this.value)">
-            <img src="./imgs/gold.png" alt="birs">
-
-        </button>
-        <button class="img-btn" value="./imgs/cat.png" onclick="onImg(this.value)">
-            <img src="./imgs/cat.png" alt="birs">
-
-        </button>
-        <button class="img-btn" value="./imgs/perro.png" onclick="onImg(this.value)">
-            <img src="./imgs/perro.png" alt="birs">
-
-        </button>
-
+    <div>
+        <h1>Caso 1</h1>
+        <p>Capacidad de detectar una imagen (almacenada en el proyecto). Se deberá disponer de un catálogo de imágenes
+            en miniatura (no menos de 5), al pulsar clic sobre una de ella se deberá mostrar la descripción y el nivel
+            porcentual de confianza de lo que se ha identificado. Si la imagen tiene menos de 50%, deberá mostrarse en
+            el centro un signo de interrogación e indicar que no puede precisar que es.</p>
     </div>
+    <div style="display: flex; flex-direction: row !important; align-content: center; justify-content: center;">
+        <div class="btn-group">
+            <button class="img-btn" value="./imgs/bird.png" onclick="onImg(this.value)">
+                <img src="./imgs/bird.png" alt="birs">
+            </button>
+            <button class="img-btn" value="./imgs/vaca.png" onclick="onImg(this.value)">
+                <img src="./imgs/vaca.png" alt="birs">
 
-    <div id="canvaContainer"></div>
+            </button>
+            <button class="img-btn" value="./imgs/panda.png" onclick="onImg(this.value)">
+                <img src="./imgs/panda.png" alt="birs">
+
+            </button>
+            <button class="img-btn" value="./imgs/zebra.png" onclick="onImg(this.value)">
+                <img src="./imgs/zebra.png" alt="birs">
+
+            </button>
+            <button class="img-btn" value="./imgs/gold.png" onclick="onImg(this.value)">
+                <img src="./imgs/gold.png" alt="birs">
+
+            </button>
+            <button class="img-btn" value="./imgs/cat.png" onclick="onImg(this.value)">
+                <img src="./imgs/cat.png" alt="birs">
+
+            </button>
+            <button class="img-btn" value="./imgs/perro.png" onclick="onImg(this.value)">
+                <img src="./imgs/perro.png" alt="birs">
+
+            </button>
+
+        </div>
+
+        <div id="canvaContainer"></div>
+    </div>
 </div>
 
 <script>
@@ -80,19 +86,19 @@
         label = "Label: " + results[0].label;
         const confi = results[0].confidence;
         confidence = "Confidence: " + nf(confi, 0, 2);
-        if (confi < 0.5){
-            text("Valor muy bajo para concretar algo",10,340)
+        if (confi < 0.5) {
+            text("Valor muy bajo para concretar algo", 10, 340)
         }
         text(label, 10, 360);
         text(confidence, 10, 380);
 
     }
 
-    function onImg(imgsource){
+    function onImg(imgsource) {
         loadImage(imgsource, (img) => {
 
             classifier.classify(img, (r) => {
-                if (r[0].confidence < 0.5){
+                if (r[0].confidence < 0.5) {
                     loadImage("./imgs/error.png", (img2) => {
                         image(img2, 0, 0, width, height);
                         gotResult(r);
