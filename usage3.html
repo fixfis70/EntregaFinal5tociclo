@@ -17,14 +17,17 @@
         <p>Selecciona un color primero</p>
         <input type="color" id="color">
         <p>Selecciona que quieres capurar</p>
-<!--        <select id="select">-->
-<!--            <option value="nose">Nariz</option>-->
-<!--            <option value="face">Cara</option>-->
-<!--            <option value="eyes">Ojos</option>-->
-<!--            <option value="eyesbrow">Cejas</option>-->
-<!--            <option value="lips">Boca</option>-->
-<!--        </select>-->
-        <input type="text" id="select">
+        <select id="select">
+            <option value="leftEye">Ojo Izquierdo</option>
+            <option value="leftEyebrow">Ceja Ojo Izquierdo</option>
+            <option value="rightEye">Ojo Derecho</option>
+            <option value="rightEyebrow">Ceja Ojo Derecho</option>
+            <option value="faceOval">Silueta de la cara</option>
+            <option value="lips">Labios</option>
+            <option value="todo">Todo</option>
+        </select>
+        <!-- Puedes descomentar esto y conmentar lo de arriba para poder introducir los valores escribiendolos! -->
+<!--        <input type="text" id="select">-->
     </div>
 
 
@@ -77,11 +80,14 @@
         // Draw all the tracked face points
         for (let i = 0; i < faces.length; i++) {
             let face = faces[i];
-            let selectedPart = face[part];
+            //seleciona la parte
+            let selectedPart = face[part]?.keypoints;
+            // si es All entonces no seleccionamos una parte en concreta sino todo!
+            if (part === "todo") selectedPart = face.keypoints;
             if (!selectedPart) return
-            for (let j = 0; j < selectedPart.keypoints.length; j++) {
-                let keypoint = selectedPart.keypoints[j];
-                fill(color);
+            for (let j = 0; j < selectedPart.length; j++) {
+                let keypoint = selectedPart[j];
+                fill(color??255);
                 ellipse(keypoint.x, keypoint.y, 10, 10);
             }
         }
