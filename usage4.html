@@ -22,7 +22,8 @@
     // Video
     let video;
     // To store the classification
-    let label = "";
+    let modelResult = "";
+    let confidence = 0;
 
     // Load the model first
     function preload() {
@@ -48,24 +49,41 @@
         fill(255);
         textSize(16);
         textAlign(CENTER);
-        text(label, width / 2, height - 4);
+        text(modelResult, width / 2, height - 4);
+        text(confidence, width / 2, height - 12);
     }
 
     // Get a prediction for the current video frame
     function classifyVideo() {
         classifier.classifyStart(video, gotResult);
     }
-
     // When we get a result
     function gotResult(results) {
         // If there is an error
-        if (!results) {
+        if (!results || results.length === 0) {
             console.error("Eroro");
             return;
         }
         // The results are in an array ordered by confidence.
         // console.log(results[0]);
-        label = results[0].label;
+        const result = results[0];
+
+        if (result.confidence > 0.5) {
+            const currentResult = result.label;
+
+            if (currentResult !== modelResult) {
+                const message = new SpeechSynthesisUtterance(currentResult);
+                speechSynthesis.speak(message);
+            }
+
+            confidence = result.confidence;
+            modelResult = currentResult
+        } else {
+            modelResult = "No encontrado"
+        }
+
+        console.log(result);
+
         // Classifiy again!
     }
 </script>
